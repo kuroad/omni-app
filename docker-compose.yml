@@ -2,26 +2,25 @@ version: '3.8'
 
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/kuroad/omni-app-frontend:latest
+    container_name: hsr-frontend
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     networks:
       - hsr_network
     depends_on:
       - backend
+    restart: always
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/kuroad/omni-app-backend:latest
+    container_name: hsr-backend
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgres://postgres:postgres@db:5432/hsr
     networks:
@@ -29,9 +28,11 @@ services:
     depends_on:
       - db
       - redis
+    restart: always
 
   db:
     image: postgres:16-alpine
+    container_name: hsr-postgres
     ports:
       - "5432:5432"
     environment:
@@ -42,13 +43,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - hsr_network
+    restart: always
 
   redis:
     image: redis:7-alpine
+    container_name: hsr-redis
     ports:
       - "6379:6379"
     networks:
       - hsr_network
+    restart: always
 
 networks:
   hsr_network:
