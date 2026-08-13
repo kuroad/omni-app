@@ -50,7 +50,12 @@ export default async function apiRoutes(fastify: FastifyInstance) {
         if (cached) return reply.send({ data: JSON.parse(cached), source: 'cache' });
 
         const { PrismaClient } = require('@prisma/client');
-        const prisma = new PrismaClient();
+        const { Pool } = require('pg');
+        const { PrismaPg } = require('@prisma/adapter-pg');
+        
+        const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+        const adapter = new PrismaPg(pool);
+        const prisma = new PrismaClient({ adapter });
         
         const data = await dbCall(prisma);
         

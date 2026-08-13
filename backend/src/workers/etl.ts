@@ -1,6 +1,11 @@
 import { PrismaClient } from '@prisma/client';
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 const BASE_URL = 'https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/index_new/id';
 
 async function fetchJSON(file: string) {
