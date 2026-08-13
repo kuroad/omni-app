@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Path {
+  id         String      @id
+  name       String      @unique
+  characters Character[]
+  lightCones LightCone[]
+}
+
+model Element {
+  id         String      @id
+  name       String      @unique
+  characters Character[]
+}
+
+model Character {
+  id        String   @id
+  name      String
+  rarity    Int      // 4 or 5
+  pathId    String
+  elementId String
+  path      Path     @relation(fields: [pathId], references: [id])
+  element   Element  @relation(fields: [elementId], references: [id])
+  
+  // Relations
+  traces    CharacterTrace[]
+}
+
+model CharacterTrace {
+  id          String    @id @default(uuid())
+  characterId String
+  name        String
+  description String
+  type        String    // e.g. Basic ATK, Skill, Ultimate, Talent
+  character   Character @relation(fields: [characterId], references: [id])
+}
+
+model RelicSet {
+  id         String  @id
+  name       String
+  effect2Pc  String?
+  effect4Pc  String?
+  relics     Relic[]
+}
+
+model Relic {
+  id         String   @id
+  name       String
+  setId      String
+  relicSet   RelicSet @relation(fields: [setId], references: [id])
+}
+
+model LightCone {
+  id        String @id
+  name      String
+  rarity    Int    // 3, 4, or 5
+  pathId    String
+  path      Path   @relation(fields: [pathId], references: [id])
+}

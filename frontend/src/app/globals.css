@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-hsr-navy: #0B0F19;
+  --color-hsr-navy-light: #161F33;
+  --color-hsr-gold: #D4AF37;
+  
+  /* HSR Element Colors */
+  --color-hsr-physical: #B6B6B6;
+  --color-hsr-fire: #F24822;
+  --color-hsr-ice: #33BCEF;
+  --color-hsr-lightning: #B556D5;
+  --color-hsr-wind: #44C99A;
+  --color-hsr-quantum: #7856B7;
+  --color-hsr-imaginary: #F4D258;
+}
+
+:root {
+  --background: var(--color-hsr-navy);
+  --foreground: #ededed;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  /* Tambahan untuk menjaga background stabil saat scrolling */
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl shadow-black/50 rounded-xl;
+}
+
+/* Shimmer/Pulse Skeleton */
+.skeleton-shimmer {
+  @apply animate-pulse bg-white/10 rounded-xl;
+}
