@@ -40,7 +40,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: hsr
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - /DATA/AppData/omni-app/postgres:/var/lib/postgresql/data
     networks:
       - hsr_network
     restart: always
@@ -50,6 +50,8 @@ services:
     container_name: hsr-redis
     ports:
       - "6379:6379"
+    volumes:
+      - /DATA/AppData/omni-app/redis:/data
     networks:
       - hsr_network
     restart: always
@@ -57,5 +59,4 @@ services:
 networks:
   hsr_network:
 
-volumes:
-  pgdata:
+
