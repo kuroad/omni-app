@@ -21,14 +21,18 @@ function GenericCard({ item, tabId }: { item: any, tabId: string }) {
 
   let desc = item.desc;
   if (tabId === 'relics' && typeof item.desc === 'string') {
+    let parsed: string[] | null = null;
     try {
-      const parsed = JSON.parse(item.desc);
+      parsed = JSON.parse(item.desc);
+    } catch { /* empty */ }
+    
+    if (parsed) {
       desc = (
         <ul className="list-disc pl-4 space-y-1">
           {parsed.map((d: string, i: number) => <li key={i}>{d}</li>)}
         </ul>
       );
-    } catch { /* empty */ }
+    }
   } else if (typeof desc === 'string') {
     // Remove weird html tags if any from raw data
     desc = desc.replace(/<[^>]*>?/gm, '');
