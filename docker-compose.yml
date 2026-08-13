@@ -5,7 +5,7 @@ services:
     image: ghcr.io/kuroad/omni-app-frontend:latest
     container_name: hsr-frontend
     ports:
-      - "3000:3000"
+      - "4000:3000"
     environment:
       - NODE_ENV=production
     networks:
@@ -18,7 +18,7 @@ services:
     image: ghcr.io/kuroad/omni-app-backend:latest
     container_name: hsr-backend
     ports:
-      - "3001:3001"
+      - "4001:3001"
     environment:
       - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
