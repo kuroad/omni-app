@@ -17,9 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={`${inter.className} min-h-screen bg-[var(--background)] text-[var(--foreground)]`}>
+      <body className={`${inter.className} min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)]`}>
         <ReactQueryProvider>
-          {children}
+          <div className="flex-1">
+            {children}
+          </div>
+          <footer className="w-full text-center py-6 text-gray-500/60 text-xs border-t border-white/5 mt-8">
+            <p>Omni-Ensiklopedia HSR &copy; 2026 • Versi 1.5.0 (Omni-Database Update)</p>
+          </footer>
         </ReactQueryProvider>
       </body>
     </html>
