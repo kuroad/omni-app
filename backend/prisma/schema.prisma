@@ -44,8 +44,8 @@ model CharacterTrace {
 model RelicSet {
   id         String  @id
   name       String
-  effect2Pc  String?
-  effect4Pc  String?
+  desc       String? // JSON stringified array or concatenated
+  icon       String?
   relics     Relic[]
 }
 
@@ -53,13 +53,48 @@ model Relic {
   id         String   @id
   name       String
   setId      String
+  icon       String?
   relicSet   RelicSet @relation(fields: [setId], references: [id])
 }
 
 model LightCone {
-  id        String @id
+  id        String  @id
   name      String
-  rarity    Int    // 3, 4, or 5
+  rarity    Int
   pathId    String
-  path      Path   @relation(fields: [pathId], references: [id])
+  desc      String?
+  icon      String?
+  path      Path    @relation(fields: [pathId], references: [id])
+}
+
+model Item {
+  id        String  @id
+  name      String
+  type      String
+  subType   String?
+  rarity    Int
+  icon      String?
+}
+
+model Achievement {
+  id        String   @id
+  seriesId  String
+  title     String
+  desc      String
+  hide      Boolean  @default(false)
+}
+
+model SimulatedBlessing {
+  id           String   @id
+  name         String
+  desc         String
+  enhancedDesc String?
+}
+
+model SimulatedCurio {
+  id        String   @id
+  name      String
+  desc      String
+  bgDesc    String?
+  icon      String?
 }

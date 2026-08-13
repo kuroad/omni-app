@@ -41,37 +41,54 @@ export default async function apiRoutes(fastify: FastifyInstance) {
     }
   });
 
-  fastify.get('/characters', async (request, reply) => {
-    try {
-      const cacheKey = 'encyclopedia:characters';
-      const cached = await redis.get(cacheKey);
-      
-      if (cached) {
-        return reply.send({ data: JSON.parse(cached), source: 'cache' });
-      }
+  // --- ENSISKLOPEDIA ENDPOINTS ---
+  
+  const setupCachedRoute = (route: string, cacheKey: string, dbCall: (prisma: any) => Promise<any>) => {
+    fastify.get(route, async (request, reply) => {
+      try {
+        const cached = await redis.get(cacheKey);
+        if (cached) return reply.send({ data: JSON.parse(cached), source: 'cache' });
 
-      // Dynamic import to avoid circular dependency or just instantiate
-      const { PrismaClient } = require('@prisma/client');
-      const prisma = new PrismaClient();
-      
-      const characters = await prisma.character.findMany({
-        include: {
-          path: true,
-          element: true
-        },
-        orderBy: {
-          name: 'asc'
-        }
-      });
-      
-      // Cache for 24 hours (86400 seconds)
-      await redis.set(cacheKey, JSON.stringify(characters), 'EX', 86400);
-      
-      await prisma.$disconnect();
-      return reply.send({ data: characters, source: 'db' });
-    } catch (error) {
-      fastify.log.error(error);
-      return reply.code(500).send({ error: { message: 'Database error', code: 'DB_ERROR' } });
-    }
-  });
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        
+        const data = await dbCall(prisma);
+        
+        await redis.set(cacheKey, JSON.stringify(data), 'EX', 86400); // Cache 24h
+        await prisma.$disconnect();
+        return reply.send({ data, source: 'db' });
+      } catch (error) {
+        fastify.log.error(error);
+        return reply.code(500).send({ error: { message: 'Database error', code: 'DB_ERROR' } });
+      }
+    });
+  };
+
+  setupCachedRoute('/characters', 'encyclopedia:characters', (prisma) => 
+    prisma.character.findMany({ include: { path: true, element: true }, orderBy: { name: 'asc' } })
+  );
+
+  setupCachedRoute('/lightcones', 'encyclopedia:lightcones', (prisma) => 
+    prisma.lightCone.findMany({ include: { path: true }, orderBy: { rarity: 'desc' } })
+  );
+
+  setupCachedRoute('/relics', 'encyclopedia:relics', (prisma) => 
+    prisma.relicSet.findMany({ orderBy: { name: 'asc' } })
+  );
+
+  setupCachedRoute('/items', 'encyclopedia:items', (prisma) => 
+    prisma.item.findMany({ orderBy: { rarity: 'desc' } })
+  );
+
+  setupCachedRoute('/achievements', 'encyclopedia:achievements', (prisma) => 
+    prisma.achievement.findMany({ orderBy: { title: 'asc' } })
+  );
+
+  setupCachedRoute('/simulated/blessings', 'encyclopedia:blessings', (prisma) => 
+    prisma.simulatedBlessing.findMany({ orderBy: { name: 'asc' } })
+  );
+
+  setupCachedRoute('/simulated/curios', 'encyclopedia:curios', (prisma) => 
+    prisma.simulatedCurio.findMany({ orderBy: { name: 'asc' } })
+  );
 }

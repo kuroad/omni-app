@@ -58,3 +58,10 @@ export async function getCharacters() {
   const result = await res.json();
   return result.data;
 }
+
+export async function fetchOmniData(endpoint: string) {
+  const res = await fetch(`/api/${endpoint}`);
+  if (!res.ok) throw new Error(`Gagal mengambil data dari ${endpoint}`);
+  const result = await res.json();
+  return result.data;
+}
