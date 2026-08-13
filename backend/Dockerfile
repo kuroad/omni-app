@@ -41,6 +41,7 @@ COPY --from=builder /app/prisma ./prisma
 # kita copy src dan file konfigurasi.
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
+COPY --from=builder /app/prisma.config.ts ./
 
 COPY start.sh ./
 RUN chmod +x start.sh
