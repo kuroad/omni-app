@@ -1,5 +1,6 @@
 import { GlassCard } from '@/components/ui/GlassCard';
 import { BadgeElement } from '@/components/ui/BadgeElement';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -14,24 +15,28 @@ export default function Home() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-        <GlassCard tiltOnHover className="flex flex-col items-center justify-center h-64 text-center cursor-pointer">
-          <h2 className="text-2xl font-semibold mb-2">Pencarian UID</h2>
-          <p className="text-sm text-gray-400 mb-4">Lihat status karakter dan skor Relik Anda.</p>
-          <div className="flex gap-2 mt-4">
-            <BadgeElement element="Quantum" />
-            <BadgeElement element="Imaginary" />
-          </div>
-        </GlassCard>
+        <Link href="/profile" className="block w-full">
+          <GlassCard tiltOnHover className="flex flex-col items-center justify-center h-64 text-center cursor-pointer">
+            <h2 className="text-2xl font-semibold mb-2">Pencarian UID</h2>
+            <p className="text-sm text-gray-400 mb-4">Lihat status karakter dan skor Relik Anda.</p>
+            <div className="flex gap-2 mt-4">
+              <BadgeElement element="Quantum" />
+              <BadgeElement element="Imaginary" />
+            </div>
+          </GlassCard>
+        </Link>
 
-        <GlassCard tiltOnHover className="flex flex-col items-center justify-center h-64 text-center cursor-pointer">
-          <h2 className="text-2xl font-semibold mb-2">Ensiklopedia</h2>
-          <p className="text-sm text-gray-400 mb-4">Eksplorasi Lore, Light Cone, dan Relik.</p>
-          <div className="flex gap-2 mt-4">
-            <BadgeElement element="Fire" />
-            <BadgeElement element="Ice" />
-            <BadgeElement element="Lightning" />
-          </div>
-        </GlassCard>
+        <Link href="/encyclopedia" className="block w-full">
+          <GlassCard tiltOnHover className="flex flex-col items-center justify-center h-64 text-center cursor-pointer">
+            <h2 className="text-2xl font-semibold mb-2">Ensiklopedia</h2>
+            <p className="text-sm text-gray-400 mb-4">Eksplorasi Lore, Light Cone, dan Relik.</p>
+            <div className="flex gap-2 mt-4">
+              <BadgeElement element="Fire" />
+              <BadgeElement element="Ice" />
+              <BadgeElement element="Lightning" />
+            </div>
+          </GlassCard>
+        </Link>
       </div>
     </main>
   );
