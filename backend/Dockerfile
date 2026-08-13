@@ -42,9 +42,12 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/src ./src
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
+COPY start.sh ./
+RUN chmod +x start.sh
+
 # Expose port backend
 EXPOSE 3001
 ENV PORT=3001
 
 # Jalankan sinkronisasi database, jalankan ETL otomatis, lalu mulai server
-CMD ["sh", "-c", "npx prisma db push && npx tsx src/workers/etl.ts && npx tsx src/server.ts"]
+CMD ["./start.sh"]
