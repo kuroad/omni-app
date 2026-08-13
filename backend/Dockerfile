@@ -33,6 +33,7 @@ COPY package.json ./
 # Hanya copy production dependencies untuk meminimalisir ukuran
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/prisma ./prisma
 
 # Copy hasil build JS (dari src ke dist/src jika outDir diset, jika tidak kita akan jalankan tsx saja)
