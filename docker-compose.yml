@@ -8,6 +8,7 @@ services:
       - "14000:3000"
     environment:
       - NODE_ENV=production
+      - BACKEND_URL=http://backend:3001
     volumes:
       - /DATA/AppData/omni-app/frontend:/app/logs
     networks:
