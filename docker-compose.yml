@@ -8,6 +8,8 @@ services:
       - "4000:3000"
     environment:
       - NODE_ENV=production
+    volumes:
+      - /DATA/AppData/omni-app/frontend:/app/logs
     networks:
       - hsr_network
     depends_on:
@@ -23,6 +25,8 @@ services:
       - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgres://postgres:postgres@db:5432/hsr
+    volumes:
+      - /DATA/AppData/omni-app/backend:/app/logs
     networks:
       - hsr_network
     depends_on:
