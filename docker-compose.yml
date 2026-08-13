@@ -8,22 +8,6 @@ services:
       - "14000:3000"
     environment:
       - NODE_ENV=production
-      - BACKEND_URL=http://backend:3001
-    volumes:
-      - /DATA/AppData/omni-app/frontend:/app/logs
-    networks:
-      - hsr_network
-    depends_on:
-      - backend
-    restart: always
-
-  backend:
-    image: ghcr.io/kuroad/omni-app-backend:latest
-    container_name: hsr-backend
-    ports:
-      - "14001:3001"
-    environment:
-      - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgres://postgres:postgres@db:5432/hsr
     volumes:

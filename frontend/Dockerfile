@@ -14,6 +14,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+RUN npx prisma generate
+
 ARG COMMIT_HASH
 ENV NEXT_PUBLIC_COMMIT_HASH=$COMMIT_HASH
 
@@ -27,16 +29,26 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# User tanpa hak root untuk keamanan
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+# Install bash dan openssl untuk Prisma & start.sh
+RUN apk add --no-cache bash openssl
 
 COPY --from=builder /app/public ./public
 
-# Next.js standalone output (hanya file yang dibutuhkan)
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Next.js standalone output
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# Copy Prisma schema and config
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./
+COPY --from=builder /app/scripts ./scripts
+
+# Copy start script
+COPY start.sh ./
+RUN chmod +x start.sh
+
+# Install tsx globally for ETL script
+RUN npm install -g tsx
 
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["./start.sh"]

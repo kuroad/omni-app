@@ -51,7 +51,7 @@ export async function getProfile(uid: string): Promise<ProfileData> {
 }
 
 export async function getCharacters() {
-  const res = await fetch(`/api/characters`);
+  const res = await fetch(`/api/omni/characters`);
   if (!res.ok) {
     throw new Error('Gagal mengambil data karakter');
   }
@@ -60,7 +60,7 @@ export async function getCharacters() {
 }
 
 export async function fetchOmniData(endpoint: string) {
-  const res = await fetch(`/api/${endpoint}`);
+  const res = await fetch(`/api/omni/${endpoint}`);
   if (!res.ok) throw new Error(`Gagal mengambil data dari ${endpoint}`);
   const result = await res.json();
   return result.data;
