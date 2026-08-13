@@ -49,3 +49,12 @@ export async function getProfile(uid: string): Promise<ProfileData> {
   }
   return res.json();
 }
+
+export async function getCharacters() {
+  const res = await fetch(`/api/characters`);
+  if (!res.ok) {
+    throw new Error('Gagal mengambil data karakter');
+  }
+  const result = await res.json();
+  return result.data;
+}

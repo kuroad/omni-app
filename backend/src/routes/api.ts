@@ -41,9 +41,37 @@ export default async function apiRoutes(fastify: FastifyInstance) {
     }
   });
 
-  // Contoh endpoint Ensiklopedia (Nanti disambung ke PostgreSQL)
   fastify.get('/characters', async (request, reply) => {
-    // TODO: Fetch dari PostgreSQL via Prisma/Drizzle
-    return reply.send({ data: [], message: 'Endpoint for static DB data' });
+    try {
+      const cacheKey = 'encyclopedia:characters';
+      const cached = await redis.get(cacheKey);
+      
+      if (cached) {
+        return reply.send({ data: JSON.parse(cached), source: 'cache' });
+      }
+
+      // Dynamic import to avoid circular dependency or just instantiate
+      const { PrismaClient } = require('@prisma/client');
+      const prisma = new PrismaClient();
+      
+      const characters = await prisma.character.findMany({
+        include: {
+          path: true,
+          element: true
+        },
+        orderBy: {
+          name: 'asc'
+        }
+      });
+      
+      // Cache for 24 hours (86400 seconds)
+      await redis.set(cacheKey, JSON.stringify(characters), 'EX', 86400);
+      
+      await prisma.$disconnect();
+      return reply.send({ data: characters, source: 'db' });
+    } catch (error) {
+      fastify.log.error(error);
+      return reply.code(500).send({ error: { message: 'Database error', code: 'DB_ERROR' } });
+    }
   });
 }

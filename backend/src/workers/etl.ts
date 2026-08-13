@@ -39,7 +39,6 @@ export async function runStaticDataETL() {
     ];
 
     // === 2. TRANSFORM & LOAD ===
-    // Menggunakan Prisma upsert untuk operasi idempotent (tidak error jika sudah ada)
     console.log('Menyimpan data Path ke PostgreSQL...');
     for (const p of rawPaths) {
       await prisma.path.upsert({
@@ -57,8 +56,45 @@ export async function runStaticDataETL() {
         create: { id: e.id, name: e.name }
       });
     }
+
+    console.log('Mengunduh data karakter asli dari repositori StarRailRes...');
+    const response = await fetch('https://raw.githubusercontent.com/Mar-7th/StarRailRes/master/index_new/id/characters.json');
+    const data = await response.json();
+    const characters = Object.values(data) as any[];
+
+    console.log(`Berhasil mengunduh ${characters.length} karakter. Mulai menyimpan ke PostgreSQL...`);
+    for (const c of characters) {
+      // Ensure path and element exist to avoid foreign key errors for unexpected data
+      await prisma.path.upsert({
+        where: { id: c.path },
+        update: {},
+        create: { id: c.path, name: c.path }
+      });
+      await prisma.element.upsert({
+        where: { id: c.element },
+        update: {},
+        create: { id: c.element, name: c.element }
+      });
+
+      await prisma.character.upsert({
+        where: { id: String(c.id) },
+        update: {
+          name: c.name,
+          rarity: c.rarity,
+          pathId: c.path,
+          elementId: c.element
+        },
+        create: {
+          id: String(c.id),
+          name: c.name,
+          rarity: c.rarity,
+          pathId: c.path,
+          elementId: c.element
+        }
+      });
+    }
     
-    console.log('✅ Proses ETL selesai dengan sukses!');
+    console.log('✅ Proses ETL Data Asli selesai dengan sukses!');
   } catch (error) {
     console.error('❌ Gagal menjalankan proses ETL:', error);
   } finally {
