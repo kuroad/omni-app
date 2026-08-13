@@ -7,16 +7,7 @@ interface RelicSubStat {
   percent: boolean;
 }
 
-interface Relic {
-  id: string;
-  name: string;
-  setId: string;
-  setName: string;
-  rarity: 3 | 4 | 5;
-  level: number;
-  mainStat: { name: string; value: number; display: string; percent: boolean };
-  subStats: RelicSubStat[];
-}
+// Extracted Relic interface if needed elsewhere
 
 export interface CleanedProfile {
   uid: string;

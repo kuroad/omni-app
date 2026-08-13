@@ -4,9 +4,10 @@ import { fetchAndCleanProfile } from '@/lib/mihomo';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { uid: string } }
+  { params }: { params: Promise<{ uid: string }> }
 ) {
-  const { uid } = params;
+  const resolvedParams = await params;
+  const { uid } = resolvedParams;
 
   if (!uid || uid.length !== 9) {
     return NextResponse.json(

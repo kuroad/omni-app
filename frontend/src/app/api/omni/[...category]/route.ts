@@ -4,9 +4,10 @@ import prisma from '@/lib/db';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { category: string[] } }
+  { params }: { params: Promise<{ category: string[] }> }
 ) {
-  const endpoint = params.category.join('/');
+  const resolvedParams = await params;
+  const endpoint = resolvedParams.category.join('/');
   const cacheKey = `encyclopedia:${endpoint.replace('/', '_')}`;
 
   try {
