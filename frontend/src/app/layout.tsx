@@ -23,7 +23,10 @@ export default function RootLayout({
             {children}
           </div>
           <footer className="w-full text-center py-6 text-gray-500/60 text-xs border-t border-white/5 mt-8">
-            <p>Omni-Ensiklopedia HSR &copy; 2026 • Versi 1.5.0 (Omni-Database Update)</p>
+            <p>
+              Omni-Ensiklopedia HSR &copy; 2026 • Versi 1.5.0 (Omni-Database Update)<br/>
+              <span className="text-gray-600/50 mt-1 inline-block">Build: {process.env.NEXT_PUBLIC_COMMIT_HASH ? process.env.NEXT_PUBLIC_COMMIT_HASH.substring(0, 7) : 'dev-local'}</span>
+            </p>
           </footer>
         </ReactQueryProvider>
       </body>

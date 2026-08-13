@@ -33,6 +33,8 @@ jobs:
           context: ./frontend
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+          build-args: |
+            COMMIT_HASH=${{ github.sha }}
 
   build-and-push-backend:
     runs-on: ubuntu-latest

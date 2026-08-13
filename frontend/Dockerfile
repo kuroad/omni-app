@@ -13,6 +13,10 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+ARG COMMIT_HASH
+ENV NEXT_PUBLIC_COMMIT_HASH=$COMMIT_HASH
+
 # Hasilkan output standalone
 RUN npm run build
 
