@@ -14,24 +14,26 @@ export function CharacterCard({ character, isSelected, onClick }: CharacterCardP
 
   return (
     <GlassCard 
-      className={`cursor-pointer transition-all ${isSelected ? 'ring-2 ring-hsr-gold bg-white/10' : 'hover:bg-white/5'}`}
+      className={`cursor-pointer group transition-all duration-300 ${isSelected ? 'ring-2 ring-[var(--color-hsr-gold)] bg-white/10' : 'hover:-translate-y-1'}`}
       onClick={onClick}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-5">
         {/* Placeholder for Character Icon */}
-        <div className="w-16 h-16 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full flex items-center justify-center border-2 border-hsr-gold overflow-hidden">
-          <span className="text-xl font-bold">{character.name.charAt(0)}</span>
+        <div className="w-16 h-16 bg-gradient-to-tr from-[#161F33] via-[#7856B7] to-[var(--color-hsr-gold)] rounded-full flex items-center justify-center p-[2px] shadow-[0_0_15px_rgba(120,86,183,0.4)] group-hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all">
+          <div className="w-full h-full bg-[#0B0F19] rounded-full flex items-center justify-center">
+            <span className="text-xl font-bold text-white group-hover:gold-gradient-text transition-all">{character.name.charAt(0)}</span>
+          </div>
         </div>
         
         <div className="flex-1">
-          <h3 className="text-xl font-bold">{character.name}</h3>
-          <div className="text-hsr-gold text-sm tracking-widest">{stars}</div>
-          <p className="text-sm text-gray-300">Lv. {character.level}</p>
+          <h3 className="text-xl font-bold group-hover:gold-gradient-text transition-all">{character.name}</h3>
+          <div className="text-[var(--color-hsr-gold)] text-xs tracking-[0.2em] mt-1">{stars}</div>
+          <p className="text-sm text-gray-400 mt-1 font-medium">Lv. {character.level}</p>
         </div>
 
-        <div className="flex flex-col gap-1 items-end">
+        <div className="flex flex-col gap-2 items-end">
           <BadgeElement element={character.element.name as any} />
-          <span className="text-xs text-gray-400 font-semibold uppercase tracking-wider">{character.path.name}</span>
+          <span className="glass-pill text-gray-300 group-hover:border-[var(--color-hsr-gold)]/50 transition-colors">{character.path.name}</span>
         </div>
       </div>
     </GlassCard>

@@ -4,6 +4,7 @@
   --color-hsr-navy: #0B0F19;
   --color-hsr-navy-light: #161F33;
   --color-hsr-gold: #D4AF37;
+  --color-hsr-gold-light: #F2D06B;
   
   /* HSR Element Colors */
   --color-hsr-physical: #B6B6B6;
@@ -22,19 +23,35 @@
 
 body {
   background-color: var(--background);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(22, 31, 51, 0.8) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(120, 86, 183, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
   /* Tambahan untuk menjaga background stabil saat scrolling */
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* Glassmorphism Utilities */
+/* Premium Glassmorphism Utilities */
 .glass-panel {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl shadow-black/50 rounded-xl;
+  @apply bg-white/[0.03] backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/60 rounded-2xl transition-all duration-300;
+}
+
+.glass-panel:hover {
+  @apply bg-white/[0.06] border-white/20 shadow-[0_0_20px_rgba(212,175,55,0.1)];
+}
+
+.glass-pill {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-1 text-xs font-semibold;
+}
+
+.gold-gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-hsr-gold)] to-[var(--color-hsr-gold-light)];
 }
 
 /* Shimmer/Pulse Skeleton */
 .skeleton-shimmer {
-  @apply animate-pulse bg-white/10 rounded-xl;
+  @apply animate-pulse bg-white/10 rounded-2xl;
 }

@@ -39,18 +39,20 @@ function GenericCard({ item, tabId }: { item: any, tabId: string }) {
   }
 
   return (
-    <GlassCard className="h-full flex flex-col hover:bg-white/5 transition-colors">
-      <div className="flex gap-4 items-start mb-3">
-        <div className="w-12 h-12 bg-black/40 rounded flex items-center justify-center border border-white/20 shrink-0 overflow-hidden">
-          <span className="font-bold text-lg text-gray-300">{item.name?.charAt(0) || item.title?.charAt(0)}</span>
+    <GlassCard className="h-full flex flex-col group hover:shadow-[0_0_20px_rgba(212,175,55,0.15)] transition-all duration-300">
+      <div className="flex gap-5 items-start mb-4">
+        <div className="w-12 h-12 bg-gradient-to-tr from-[#161F33] to-[#7856B7] rounded-lg flex items-center justify-center p-[1px] shrink-0 overflow-hidden shadow-lg group-hover:shadow-[0_0_15px_rgba(120,86,183,0.5)] transition-shadow">
+          <div className="w-full h-full bg-[#0B0F19] rounded-lg flex items-center justify-center">
+            <span className="font-bold text-lg text-white group-hover:gold-gradient-text transition-all">{item.name?.charAt(0) || item.title?.charAt(0)}</span>
+          </div>
         </div>
         <div>
-          <h3 className="font-bold leading-tight">{item.name || item.title}</h3>
-          {item.rarity && <div className="text-hsr-gold text-xs tracking-widest">{Array(item.rarity).fill('★').join('')}</div>}
-          {item.pathId && <div className="text-xs text-gray-400 mt-1 uppercase">{item.pathId}</div>}
+          <h3 className="font-bold leading-tight group-hover:gold-gradient-text transition-all text-lg">{item.name || item.title}</h3>
+          {item.rarity && <div className="text-[var(--color-hsr-gold)] text-xs tracking-widest mt-1">{Array(item.rarity).fill('★').join('')}</div>}
+          {item.pathId && <div className="glass-pill mt-2 inline-block border-[var(--color-hsr-gold)]/30 text-[var(--color-hsr-gold)]">{item.pathId}</div>}
         </div>
       </div>
-      <div className="text-sm text-gray-300 flex-1 overflow-y-auto custom-scrollbar pr-1">
+      <div className="text-sm text-gray-300/80 flex-1 overflow-y-auto custom-scrollbar pr-2 leading-relaxed">
         {desc}
       </div>
     </GlassCard>
@@ -73,40 +75,51 @@ export default function OmniEncyclopediaPage() {
   });
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-7xl">
+    <main className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
       <div className="flex flex-col lg:flex-row gap-8">
         
         {/* Sidebar Navigation */}
-        <div className="w-full lg:w-64 shrink-0">
-          <div className="sticky top-24 space-y-2">
-            <h2 className="text-xl font-bold mb-6 text-hsr-gold border-b border-white/10 pb-2">Kategori Omni</h2>
-            {TABS.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => { setActiveTab(tab); setSearchQuery(''); }}
-                className={`w-full text-left px-4 py-3 rounded-lg font-semibold transition-all ${
-                  activeTab.id === tab.id 
-                    ? 'bg-hsr-gold text-black shadow-lg shadow-hsr-gold/20' 
-                    : 'bg-black/30 text-gray-400 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+        <div className="w-full lg:w-72 shrink-0">
+          <div className="sticky top-24 glass-panel p-4">
+            <h2 className="text-sm font-bold mb-4 text-[var(--color-hsr-gold)] tracking-[0.2em] uppercase px-4">Kategori Omni</h2>
+            <div className="space-y-1">
+              {TABS.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => { setActiveTab(tab); setSearchQuery(''); }}
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-300 relative overflow-hidden ${
+                    activeTab.id === tab.id 
+                      ? 'bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.05)] border border-white/20' 
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white border border-transparent'
+                  }`}
+                >
+                  {activeTab.id === tab.id && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-[var(--color-hsr-gold)] shadow-[0_0_10px_var(--color-hsr-gold)]" />
+                  )}
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Main Content Area */}
         <div className="flex-1 min-w-0">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-4">{activeTab.label}</h1>
-            <input 
-              type="text" 
-              placeholder={`Cari di ${activeTab.label}...`} 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full max-w-md bg-black/40 border border-white/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-hsr-gold transition-colors"
-            />
+          <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h1 className="text-4xl font-bold mb-2 tracking-tight">{activeTab.label}</h1>
+              <p className="text-[var(--color-hsr-gold)] text-sm tracking-widest uppercase">Database Ensiklopedia</p>
+            </div>
+            <div className="relative w-full max-w-xs">
+              <input 
+                type="text" 
+                placeholder={`Cari ${activeTab.label}...`} 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-10 py-2.5 text-white focus:outline-none focus:border-[var(--color-hsr-gold)] focus:bg-white/10 transition-all placeholder-gray-500 shadow-inner"
+              />
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-gray-500" />
+            </div>
           </div>
 
           {isLoading ? (
