@@ -5,4 +5,4 @@ const config = {
   earlyAccess: true,
 };
 
-export default config;
+module.exports = config;
