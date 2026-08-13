@@ -16,24 +16,28 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
         <Link href="/profile" className="block w-full">
-          <GlassCard tiltOnHover className="flex flex-col items-center justify-center h-64 text-center cursor-pointer">
-            <h2 className="text-2xl font-semibold mb-2">Pencarian UID</h2>
-            <p className="text-sm text-gray-400 mb-4">Lihat status karakter dan skor Relik Anda.</p>
-            <div className="flex gap-2 mt-4">
-              <BadgeElement element="Quantum" />
-              <BadgeElement element="Imaginary" />
+          <GlassCard tiltOnHover className="h-64 cursor-pointer">
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <h2 className="text-2xl font-semibold mb-2">Pencarian UID</h2>
+              <p className="text-sm text-gray-400 mb-6">Lihat status karakter dan skor Relik Anda.</p>
+              <div className="flex gap-3">
+                <BadgeElement element="Quantum" />
+                <BadgeElement element="Imaginary" />
+              </div>
             </div>
           </GlassCard>
         </Link>
 
         <Link href="/encyclopedia" className="block w-full">
-          <GlassCard tiltOnHover className="flex flex-col items-center justify-center h-64 text-center cursor-pointer">
-            <h2 className="text-2xl font-semibold mb-2">Ensiklopedia</h2>
-            <p className="text-sm text-gray-400 mb-4">Eksplorasi Lore, Light Cone, dan Relik.</p>
-            <div className="flex gap-2 mt-4">
-              <BadgeElement element="Fire" />
-              <BadgeElement element="Ice" />
-              <BadgeElement element="Lightning" />
+          <GlassCard tiltOnHover className="h-64 cursor-pointer">
+            <div className="flex flex-col items-center justify-center h-full text-center">
+              <h2 className="text-2xl font-semibold mb-2">Ensiklopedia</h2>
+              <p className="text-sm text-gray-400 mb-6">Eksplorasi Lore, Light Cone, dan Relik.</p>
+              <div className="flex gap-3">
+                <BadgeElement element="Fire" />
+                <BadgeElement element="Ice" />
+                <BadgeElement element="Lightning" />
+              </div>
             </div>
           </GlassCard>
         </Link>
