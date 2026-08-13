@@ -46,5 +46,5 @@ COPY --from=builder /app/tsconfig.json ./tsconfig.json
 EXPOSE 3001
 ENV PORT=3001
 
-# Jalankan server
-CMD ["npx", "tsx", "src/server.ts"]
+# Jalankan sinkronisasi database, jalankan ETL otomatis, lalu mulai server
+CMD ["sh", "-c", "npx prisma db push && npx tsx src/workers/etl.ts && npx tsx src/server.ts"]
